@@ -11,17 +11,7 @@ pub fn brackets_are_balanced(string: &str) -> bool {
         match c {
             '(' | '{' | '[' => stack.push(c),
             ')' | '}' | ']' => {
-                if let Some(&top) = stack.last() {
-                    if let Some(&matching) = brackets_map.get(&c) {
-                        if top == matching {
-                            stack.pop();
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
-                } else {
+                if stack.pop() != brackets_map.get(&c).map(|&x| x) {
                     return false;
                 }
             }
