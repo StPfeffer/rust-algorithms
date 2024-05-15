@@ -27,18 +27,16 @@
 /// assert_eq!(encrypted, "Khoor, Zruog!");
 /// ```
 fn caesar_cipher(text: &str, rotation: usize) -> String {
-    let mut result = String::with_capacity(text.len());
+    text.chars().map(|c| {
+        if c.is_ascii_alphabetic() {
+            let first = if c.is_ascii_lowercase() { b'a' } else { b'A' };
 
-    for c in text.chars() {
-        let new_char = match c {
-            'A'..='Z' => (((c as u8 - b'A') + (rotation % 26) as u8) % 26 + b'A') as char,
-            'a'..='z' => (((c as u8 - b'a') + (rotation % 26) as u8) % 26 + b'a') as char,
-            _ => c,
-        };
-        result.push(new_char);
-    }
-
-    result
+            (((c as u8 - first) + (rotation % 26) as u8) % 26 + first) as char
+        } else {
+            c
+        }
+    })
+    .collect()
 }
 
 #[cfg(test)]
